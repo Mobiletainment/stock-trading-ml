@@ -47,36 +47,38 @@ for ohlcv, ind in zip(ohlcv_test[start: end], tech_ind_test[start: end]):
 print(f"buys: {len(buys)}")
 print(f"sells: {len(sells)}")
 
-last_price = 0
+
 def compute_earnings(buys_, sells_):
-    purchase_amt = 4000
+    last_price = 0
     stock = 0
-    start_balance = 5000
     balance = 5000
+    start_balance = int(balance)
+
     while len(buys_) > 0 and len(sells_) > 0:
         if buys_[0][0] < sells_[0][0]:
+            # Test policy: Leave some in the bank
             num_stocks = (balance * .8) // buys_[0][1]
             if num_stocks > 0:
                 stock += num_stocks
                 cost = round(num_stocks * buys_[0][1], 2)
                 balance -= cost
-                print(f'buy {num_stocks} stocks for {cost}')
+                print(f'buy {num_stocks} stocks for ${cost} at ${buys_[0][1]} each')
                 last_price = buys_[0][1]
             buys_.pop(0)
         else:
             # time to sell all of our stock
             balance += stock * sells_[0][1]
             if stock > 0:
-                print(f'sell all {stock} stocks for {stock * sells_[0][1]}')
+                print(f'sell all {stock} stocks for ${stock * sells_[0][1]}')
             stock = 0
             last_price = sells_[0][1]
             sells_.pop(0)
 
+    # sell any leftover stock
     if stock > 0:
-        print(balance, stock, last_price)
         balance += stock * last_price
 
-    print(f"total: ${balance:.2f} earnings: ${balance - start_balance:.2f} at a %{((balance/ start_balance) - 1) * 100:.2f} percent")
+    print(f"\ntotal: ${balance:.2f} earnings: ${balance - start_balance:.2f} at a %{((balance/ start_balance) - 1) * 100:.2f} percent")
 
 
 # we create new lists so we dont modify the original
