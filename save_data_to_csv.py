@@ -11,7 +11,7 @@ def save_dataset(symbol, time_window):
     ts = TimeSeries(key=api_key, output_format='pandas')
     if time_window == 'intraday':
         data, meta_data = ts.get_intraday(
-            symbol='MSFT', interval='1min', outputsize='full')
+            symbol=symbol, interval='1min', outputsize='full')
     elif time_window == 'daily':
         data, meta_data = ts.get_daily(symbol, outputsize='full')
     elif time_window == 'daily_adj':

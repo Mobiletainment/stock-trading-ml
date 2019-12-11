@@ -1,10 +1,11 @@
 import numpy as np
 from keras.models import load_model
 from util import csv_to_dataset, history_points
+import matplotlib.pyplot as plt
 
 model = load_model('technical_model.h5')
 
-ohlcv_histories, technical_indicators, next_day_open_values, unscaled_y, y_normaliser = csv_to_dataset('MSFT_daily.csv')
+ohlcv_histories, technical_indicators, next_day_open_values, unscaled_y, y_normaliser = csv_to_dataset('KO_daily.csv')
 
 test_split = 0.9
 n = int(ohlcv_histories.shape[0] * test_split)
@@ -24,7 +25,7 @@ y_test_predicted = y_normaliser.inverse_transform(y_test_predicted)
 
 buys = []
 sells = []
-thresh = 0.1
+thresh = 0.11
 
 start = 0
 end = -1
@@ -41,14 +42,15 @@ for ohlcv, ind in zip(ohlcv_test[start: end], tech_ind_test[start: end]):
     elif delta < -thresh:
         sells.append((x, price_today[0][0]))
     x += 1
+
 print(f"buys: {len(buys)}")
 print(f"sells: {len(sells)}")
 
 
 def compute_earnings(buys_, sells_):
-    purchase_amt = 10
+    purchase_amt = 52
     stock = 0
-    balance = 0
+    balance = 1000
     while len(buys_) > 0 and len(sells_) > 0:
         if buys_[0][0] < sells_[0][0]:
             # time to buy $10 worth of stock
@@ -66,8 +68,6 @@ def compute_earnings(buys_, sells_):
 # we create new lists so we dont modify the original
 compute_earnings([b for b in buys], [s for s in sells])
 
-import matplotlib.pyplot as plt
-
 plt.gcf().set_size_inches(22, 15, forward=True)
 
 real = plt.plot(unscaled_y_test[start:end], label='real')
@@ -82,5 +82,4 @@ if len(sells) > 0:
 # pred = plt.plot(y_predicted[start:end], label='predicted')
 
 plt.legend(['Real', 'Predicted', 'Buy', 'Sell'])
-
 plt.show()
