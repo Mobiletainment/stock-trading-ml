@@ -53,6 +53,7 @@ def compute_earnings(buys_, sells_):
     stock = 0
     balance = 5000
     start_balance = int(balance)
+    highest_balance = int(balance)
 
     while len(buys_) > 0 and len(sells_) > 0:
         if buys_[0][0] < sells_[0][0]:
@@ -71,6 +72,8 @@ def compute_earnings(buys_, sells_):
             if stock > 0:
                 print(f'sell all {stock} stocks for ${stock * sells_[0][1]}')
             stock = 0
+            if balance > highest_balance:
+                highest_balance = int(balance)
             last_price = sells_[0][1]
             sells_.pop(0)
 
@@ -78,7 +81,10 @@ def compute_earnings(buys_, sells_):
     if stock > 0:
         balance += stock * last_price
 
-    print(f"\ntotal: ${balance:.2f} earnings: ${balance - start_balance:.2f} at a %{((balance/ start_balance) - 1) * 100:.2f} percent")
+    print(f"\nTotal Balance: ${balance:.2f}\n"
+          f"Highest balance: ${highest_balance}\n"
+          f"Earnings: ${balance - start_balance:.2f}\n"
+          f"Gain %{((balance/ start_balance) - 1) * 100:.2f}\n")
 
 
 # we create new lists so we dont modify the original
