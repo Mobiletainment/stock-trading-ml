@@ -63,14 +63,15 @@ def compute_earnings(buys_, sells_):
                 stock += num_stocks
                 cost = round(num_stocks * buys_[0][1], 2)
                 balance -= cost
-                print(f'buy {num_stocks} stocks for ${cost} at ${buys_[0][1]} each')
+                print(f'buy {num_stocks} stocks for ${cost} at ${buys_[0][1]:.2f} each')
                 last_price = buys_[0][1]
             buys_.pop(0)
         else:
             # time to sell all of our stock
-            balance += stock * sells_[0][1]
+            retur = stock * sells_[0][1]
+            balance += retur
             if stock > 0:
-                print(f'sell all {stock} stocks for ${stock * sells_[0][1]}')
+                print(f'sell all {stock} stocks for ${retur:.2f} at ${sells_[0][1]:.2f} each')
             stock = 0
             if balance > highest_balance:
                 highest_balance = int(balance)
