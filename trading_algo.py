@@ -26,7 +26,7 @@ y_test_predicted = y_normaliser.inverse_transform(y_test_predicted)
 
 buys = []
 sells = []
-thresh = 0.11
+thresh = .11
 
 start = 0
 end = -1
