@@ -4,18 +4,19 @@ from keras.models import Model
 from keras.layers import Dense, Dropout, LSTM, Input, Activation, concatenate
 from keras import optimizers
 import numpy as np
-np.random.seed(4)
-from tensorflow import set_random_seed
-set_random_seed(4)
+import tensorflow as tf
 from util import csv_to_dataset, history_points
 
+np.random.seed(4)
+tf.compat.v1.set_random_seed(4)
 
 # dataset
 
-ohlcv_histories, technical_indicators, next_day_open_values, unscaled_y, y_normaliser = csv_to_dataset('MSFT_daily.csv')
+ohlcv_histories, technical_indicators, next_day_open_values, unscaled_y, y_normaliser = csv_to_dataset('KO_daily.csv')
 
-test_split = 0.9
-n = int(ohlcv_histories.shape[0] * test_split)
+# test_split = 0.9
+# n = int(ohlcv_histories.shape[0] * test_split)
+n = -365
 
 ohlcv_train = ohlcv_histories[:n]
 tech_ind_train = technical_indicators[:n]

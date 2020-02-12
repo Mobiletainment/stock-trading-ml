@@ -1,3 +1,4 @@
+**/*.idea/
 creds.json
 .vscode
 *.csv
@@ -107,3 +108,7 @@ venv.bak/
 
 # mypy
 .mypy_cache/
+
+# stock-trading-ml
+.csv
+.h5
